@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card" style="margin-bottom:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 style="margin:0">Books</h2>
+    <div>
+      <a href="{% url 'library_app:book_add' %}"><button class="primary">Add Book</button></a>
+    </div>
+  </div>
+
+  <form method="get" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <input type="text" name="q" placeholder="Search title or author..." value="{{ q }}">
+    <select name="category">
+      <option value="">All categories</option>
+      {% for cat in categories %}
+      <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
+  {{ cat.name }}
+</option>
+
+      {% endfor %}
+    </select>
+    <button class="primary" type="submit">Filter</button>
+  </form>
+</div>
+
+<div class="card">
+  <table>
+    <tr>
+      <th>ID</th><th>Title</th><th>Author</th><th>Categories</th><th>Price</th><th>Actions</th>
+    </tr>
+    {% for b in books %}
+    <tr>
+      <td>{{ b.id }}</td>
+      <td>{{ b.title }}</td>
+      <td>{{ b.author.name }}</td>
+      <td>{{ b.category_list }}</td>
+      <td>৳ {{ b.price }}</td>
+      <td class="actions">
+        <a href="{% url 'library_app:book_edit' b.id %}" class="edit">Edit</a>
+        <a href="{% url 'library_app:book_delete' b.id %}" class="delete">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

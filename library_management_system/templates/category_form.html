@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card">
+  {% if confirm_delete %}
+    <h2>Confirm Delete Category</h2>
+    <p>Delete category <strong>{{ category.name }}</strong>?</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="primary">Delete</button>
+      <a href="{% url 'library_app:category_list' %}" class="secondary btn">Cancel</a>
+    </form>
+
+  {% else %}
+    <h2>{% if category %}Edit Category{% else %}Add Category{% endif %}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      <label>Name</label>
+      <input type="text" name="name" value="{{ category.name|default:'' }}" required>
+
+      <button type="submit" class="primary">
+        {% if category %}Update{% else %}Create{% endif %}
+      </button>
+
+      <a href="{% url 'library_app:category_list' %}" class="secondary btn">Back</a>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

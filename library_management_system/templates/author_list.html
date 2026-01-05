@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 style="margin:0">Authors</h2>
+    <a href="{% url 'library_app:author_add' %}"><button class="primary">Add Author</button></a>
+  </div>
+
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Email</th><th>Biography</th><th>Created</th><th>Actions</th></tr>
+    {% for a in authors %}
+    <tr>
+      <td>{{ a.id }}</td>
+      <td>{{ a.name }}</td>
+      <td>{{ a.email }}</td>
+      <td>{{ a.biography|default:'—' }}</td>
+      <td>{{ a.created_at|date:"Y-m-d H:i" }}</td>
+      <td class="actions">
+        <a href="{% url 'library_app:author_edit' a.id %}" class="edit">Edit</a>
+        <a href="{% url 'library_app:author_delete' a.id %}" class="delete">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

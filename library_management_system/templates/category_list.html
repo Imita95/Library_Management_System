@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2 style="margin:0">Categories</h2>
+    <a href="{% url 'library_app:category_add' %}"><button class="primary">Add Category</button></a>
+  </div>
+
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Actions</th></tr>
+    {% for c in categories %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td>{{ c.name }}</td>
+      <td class="actions">
+        <a href="{% url 'library_app:category_edit' c.id %}" class="edit">Edit</a>
+        <a href="{% url 'library_app:category_delete' c.id %}" class="delete">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

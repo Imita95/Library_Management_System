@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div>
+      <h2 style="margin:0">All Books</h2>
+      <div class="small">Browse books — search by title/author or filter by category</div>
+    </div>
+
+    <div class="top-controls">
+      <form method="get" style="display:flex;gap:8px" class="search">
+        <input type="text" name="q" placeholder="Search title or author..." value="{{ q }}">
+        <select name="category">
+          <option value="">All categories</option>
+          {% for cat in categories %}
+          {% endfor %}
+          <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+
+        </select>
+        <button type="submit" class="primary">Search</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  {% for book in books %}
+  <div class="card">
+    <h3 style="margin:0 0 6px">{{ book.title }}</h3>
+    <div class="small">by <strong>{{ book.author.name }}</strong></div>
+    <div style="margin:10px 0" class="small">Categories: {{ book.category_list }}</div>
+    <p style="margin:10px 0;font-size:0.95rem">{{ book.description|truncatechars:120 }}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:700">৳ {{ book.price }}</div>
+      <div>
+        <a class="secondary" href="{% url 'library_app:book_edit' book.id %}">Edit</a>
+        <a class="secondary" href="{% url 'library_app:book_delete' book.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="card">No books found.</div>
+  {% endfor %}
+</div>
+{% endblock %}

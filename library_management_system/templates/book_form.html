@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="card">
+  {% if book %}<h2>Edit Book{% else %}<h2>Add Book{% endif %}</h2>
+
+  <form method="post">{% csrf_token %}
+    <label>Title</label>
+    <input type="text" name="title" value="{{ book.title|default:'' }}" required>
+
+    <label>Author</label>
+    <select name="author" required>
+      <option value="">-- select author --</option>
+      {% for a in authors %}
+        <option value="{{ a.id }}" {% if book and book.author.id == a.id %}selected{% endif %}>{{ a.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Categories (hold ctrl/cmd to select multiple)</label>
+    <select name="categories" multiple>
+      {% for c in categories %}
+        <option value="{{ c.id }}" {% if book and c in book.categories.all %}selected{% endif %}>{{ c.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label>ISBN</label>
+    <input type="text" name="isbn" value="{{ book.isbn|default:'' }}">
+
+    <label>Published Date</label>
+    <input type="date" name="published_date" value="{{ book.published_date|default:'' }}">
+
+    <label>Total Pages</label>
+    <input type="number" name="total_pages" value="{{ book.total_pages|default:'' }}">
+
+    <label>Price</label>
+    <input type="text" name="price" value="{{ book.price|default:'0.00' }}" required>
+
+    <label>Description</label>
+    <textarea name="description">{{ book.description|default:'' }}</textarea>
+
+    <div style="margin-top:12px">
+      <button class="primary" type="submit">{% if book %}Update{% else %}Create{% endif %}</button>
+      <a href="{% url 'library_app:book_list' %}"><button type="button" class="secondary">Back</button></a>
+    </div>
+  </form>
+</div>
+{% endblock %}
